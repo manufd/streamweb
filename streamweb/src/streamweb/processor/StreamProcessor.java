@@ -25,27 +25,16 @@ public class StreamProcessor extends Thread {
 			BufferedReader br = new BufferedReader(isr);
 			String line = null;
 			StreamObject streamObject = null;
-			int temporaryCounter = 0;
 			while ((line = br.readLine()) != null) {
-				// counterByEvent.put(line, arg1)
 				try {
 					streamObject = jsonToPOJOmapper.readValue(line, StreamObject.class);
-					int words = GlobalVariables.getInstance().getWordCounter();
-					System.out.println("words now: "+words);
-					System.out.println("adding: "+streamObject.getData().length());
 					GlobalVariables.getInstance().addWords(streamObject.getData().length());
 					GlobalVariables.getInstance().incrementEventCounter(streamObject.getEventType());
 					
-					temporaryCounter++;
 				} catch (Throwable t) {
 					System.out.println("exception occured, illegal json");
 				} finally {
-					if (temporaryCounter == 5) {
-						System.out.println(GlobalVariables.getInstance().getWordCounter());
-						//printWordCounter();
-						//printCounterByEvent();
-						temporaryCounter = 0;
-					}
+					
 					streamObject = null;
 				}
 			}

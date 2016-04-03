@@ -3,14 +3,14 @@ package streamweb;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
-import globals.GlobalVariables;
 import streamweb.processor.StreamProcessor;
 
 public class ServletInitializer implements ServletContextListener {
 
+	private static final String STREAMER_PATH = "/C:/json_streams/generator-windows-amd64.exe";
+
 	@Override
 	public void contextDestroyed(ServletContextEvent arg0) {
-		// TODO Auto-generated method stub
 		
 	}
 
@@ -19,18 +19,14 @@ public class ServletInitializer implements ServletContextListener {
 		try {
 			
 			Runtime rt = Runtime.getRuntime();
-			Process proc = rt.exec("/C:/json_streams/generator-windows-amd64.exe");
-			// any error message?
-			StreamProcessor errorGobbler = new StreamProcessor(proc.getErrorStream(), "ERROR");
-			// any output?
-			StreamProcessor outputGobbler = new StreamProcessor(proc.getInputStream(), "OUTPUT");
-			// kick them off
+			Process proc = rt.exec(STREAMER_PATH);
+			String ERROR = "ERROR";
+			StreamProcessor errorGobbler = new StreamProcessor(proc.getErrorStream(), ERROR);
+			String OUTPUT = "OUTPUT";
+			StreamProcessor outputGobbler = new StreamProcessor(proc.getInputStream(), OUTPUT);
 			errorGobbler.start();
 			outputGobbler.start();
 
-			// any error???
-			//int exitVal = proc.waitFor();
-			//System.out.println("ExitValue: " + exitVal);
 		} catch (Throwable t) {
 			t.printStackTrace();
 		}
