@@ -21,8 +21,8 @@ public class GlobalVariables {
 		return instance.wordCounter;
 	}
 	
-	public void addWords(int words) {
-		instance.wordCounter += words;
+	public void addWords(String sentence) {
+		instance.wordCounter += sentence.split(" ").length;
 	}
 	
 	public Map<String, Integer> getEvents() {

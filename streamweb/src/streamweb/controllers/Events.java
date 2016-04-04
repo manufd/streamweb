@@ -21,7 +21,6 @@ public class Events extends HttpServlet {
      */
     public Events() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**

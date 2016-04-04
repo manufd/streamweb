@@ -10,13 +10,11 @@ import globals.GlobalVariables;
 
 public class StreamProcessor extends Thread {
 	private InputStream is;
-	private String type;
 	
 	private ObjectMapper jsonToPOJOmapper = new ObjectMapper(); 
 
-	public StreamProcessor(InputStream is, String type) {
+	public StreamProcessor(InputStream is) {
 		this.is = is;
-		this.type = type;
 	}
 
 	public void run() {
@@ -28,13 +26,12 @@ public class StreamProcessor extends Thread {
 			while ((line = br.readLine()) != null) {
 				try {
 					streamObject = jsonToPOJOmapper.readValue(line, StreamObject.class);
-					GlobalVariables.getInstance().addWords(streamObject.getData().length());
+					GlobalVariables.getInstance().addWords(streamObject.getData());
 					GlobalVariables.getInstance().incrementEventCounter(streamObject.getEventType());
 					
 				} catch (Throwable t) {
 					System.out.println("exception occured, illegal json");
 				} finally {
-					
 					streamObject = null;
 				}
 			}
